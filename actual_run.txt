@@ -1,0 +1,72 @@
+$ printf "2 4 5 9 11 17 0\n" | ./bin/task1_flag
+TASK 1 - flag polling with sleep_for
+DataPreparation: enter integers, 0 finishes input
+DataPreparation: input completed
+DataProcessing: primes: 2 5 11 17
+Main: processing finished
+
+$ ./bin/task2_notify_all
+TASK 2 - condition_variable and notify_all
+Waits 1: entering wait state
+Waits 3: entering wait state
+Waits 2: entering wait state
+Awake: first notify_all, predicate is still false
+Awake: event_value=1, second notify_all
+Waits 1: waiting completed
+Waits 2: waiting completed
+Waits 3: waiting completed
+Main: all waiting threads completed
+
+$ ./bin/task3_notify_one  # run 1
+TASK 3 - notify_one chooses one waiting thread
+Notify: notify_one()
+Message from Thread2
+Main: selected Thread2; remaining threads closed safely
+$ ./bin/task3_notify_one  # run 2
+TASK 3 - notify_one chooses one waiting thread
+Notify: notify_one()
+Message from Thread1
+Main: selected Thread1; remaining threads closed safely
+$ ./bin/task3_notify_one  # run 3
+TASK 3 - notify_one chooses one waiting thread
+Notify: notify_one()
+Message from Thread1
+Main: selected Thread1; remaining threads closed safely
+
+$ printf "3 4 7 12 13 21 23 0\n" | ./bin/task4_queue_cv
+TASK 4 - queue synchronization with condition_variable
+DataPreparation: enter integers, 0 finishes input
+DataProcessing: primes: 3 7 13 23
+Main: queue is empty and input is finished
+
+$ { echo 700000; sleep 1; echo 1; } | ./bin/task5_async deferred
+TASK 5 - std::async mode: deferred
+Enter n: Choose function for n (1=sqrt, 2=sin, 3=ln): Auxiliary result: 836.660027
+700000-th prime: 10570841
+Wait after auxiliary input: 60 ms
+Total time: 778 ms
+
+$ { echo 700000; sleep 1; echo 1; } | ./bin/task5_async async
+TASK 5 - std::async mode: async
+Enter n: Choose function for n (1=sqrt, 2=sin, 3=ln): Auxiliary result: 836.660027
+700000-th prime: 10570841
+Wait after auxiliary input: 0 ms
+Total time: 1001 ms
+
+$ printf "100 500 1000 0\n" | ./bin/task6_packaged_task
+TASK 6 - packaged_task queue (0 finishes input)
+Worker: calculating prime #100
+Worker: calculating prime #500
+Prime #100 = 541
+Worker: calculating prime #1000
+Prime #500 = 3571
+Worker: all queued tasks completed
+Prime #1000 = 7919
+Main: worker joined correctly
+
+$ printf "250\n" | ./bin/task7_promise
+TASK 7 - promise/future without globals
+Enter n: Main: prime #250 = 1583
+Main: prime #2500 = 22307
+SecondWorker: sqrt(250) = 15.811388
+Main: both void threads joined
